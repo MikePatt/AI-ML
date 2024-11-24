@@ -2,7 +2,7 @@
 
 This Python code solves Sudoku puzzles using the **Constraint Satisfaction Problem (CSP)** approach. The solution involves two main algorithms:
 - **AC3 (Arc-Consistency Algorithm)**: To reduce the domains of variables and enforce consistency.
-- **Backtracking Search (BTS)**: A depth-first search algorithm to find a solution to the puzzle.
+- **Backtracking Search (BTS)**: An exhaustive depth-first search algorithm to find a solution to the puzzle.
 
 ## Overview
 
