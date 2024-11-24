@@ -1,0 +1,77 @@
+# Sudoku Solver using CSP (Constraint Satisfaction Problem)
+
+This Python code solves Sudoku puzzles using the **Constraint Satisfaction Problem (CSP)** approach. The solution involves two main algorithms:
+- **AC3 (Arc-Consistency Algorithm)**: To reduce the domains of variables and enforce consistency.
+- **Backtracking Search (BTS)**: A depth-first search algorithm to find a solution to the puzzle.
+
+## Overview
+
+The program uses a class `CSP` to represent the Sudoku problem. The class includes methods to manage the board, domain (possible values for each cell), and constraints (rules like row, column, and subgrid consistency). The core logic involves:
+1. **AC3** to enforce arc consistency and reduce domains.
+2. **Backtracking** to assign values to variables and ensure they satisfy the constraints.
+
+## Key Components
+
+### 1. `CSP` Class
+The `CSP` class initializes the Sudoku puzzle with the given board string. It sets up:
+- **Board**: A dictionary that stores each cell's current value.
+- **Domain**: A dictionary that stores possible values for each cell.
+- **Constraints**: A list of constraints for rows, columns, and 3x3 subgrids.
+
+#### Methods:
+- `__init__(initBoard)`: Initializes the board, domain, and constraints based on the provided Sudoku puzzle string.
+- **Constraint setup**: Adds row, column, and 3x3 subgrid constraints to enforce the rules of Sudoku.
+
+### 2. `AC3` Algorithm
+The **AC3 algorithm** is used to enforce **arc consistency**. It iteratively revises the domains of variables (Sudoku cells) by removing inconsistent values. The process involves:
+- Creating a list of **arcs** (pairs of variables that are constrained).
+- **Revising** the domain of one variable based on the value of another (if two variables are constrained, one’s domain is revised by eliminating values that violate the constraint).
+- If the domain of any variable becomes empty, the algorithm returns `False`, indicating failure.
+
+### 3. `Backtracking Search (BTS)`
+**Backtracking** is used when **arc consistency** alone cannot fully solve the puzzle. The algorithm:
+- Selects an unassigned variable with the smallest domain.
+- Assigns a value from the domain to the variable.
+- Recursively checks the consistency of the assignment with the current state of the puzzle.
+- If an inconsistency is found, it backtracks and tries a different value.
+
+### 4. Helper Functions
+- `CreateArcs(constraints)`: Generates all pairs of variables (arcs) based on the constraints.
+- `Revise(csp, Xi, Xj)`: Revises the domain of variable `Xi` based on the value of variable `Xj`.
+- `CheckAssignment(assignments, csp)`: Checks if the current assignment is complete (all variables assigned).
+- `CheckConsistent(assignment, csp)`: Ensures the assignment is consistent with the constraints (no conflicts).
+
+### 5. Utility Functions
+- `print_board(csp)`: Prints the current board in a human-readable Sudoku format.
+- `print_solved_domain(csp)`: Prints the Sudoku puzzle’s domain or solution state (solved or unsolved).
+- `board_to_string(assignment, csp)`: Converts the current assignment back into a board string.
+
+## How it Works
+
+The program follows these steps to solve a Sudoku puzzle:
+
+1. **Initialization**: A `CSP` object is created with the Sudoku puzzle as input.
+2. **Arc-Consistency (AC3)**: The `AC3` algorithm is applied to reduce the domains of variables (cells) by enforcing row, column, and subgrid constraints.
+3. **Backtracking Search (BTS)**: If the puzzle is not solved after applying AC3, the backtracking algorithm is used to try different assignments until a valid solution is found.
+4. **Result**: Once the board is solved, the solution is printed.
+
+## Example Usage
+
+Here is how you can use the solver with different Sudoku puzzles:
+
+```python
+inputs = [
+    "000000000302540000050301070000000004409006005023054790000000050700810000080060009",
+    "000260701680070090190004500820100040004602900050003028009300074040050036703018000",
+    "000100702030950000001002003590000301020000070703000098800200100000085060605009000"
+]
+
+for item in inputs:
+    csp = CSP(item)  # Create CSP instance
+    AC3(csp)  # Apply arc-consistency (AC3)
+    assignment = BTS(csp)  # Apply backtracking search (BTS)
+    solved_board = board_to_string(assignment, csp)  # Convert solution to string
+    print_board(csp)  # Print original board
+    print("Solved Board:")
+    print(solved_board)  # Print solved board
+    print()
