@@ -1,5 +1,4 @@
-from collections import Counter
-from operator import itemgetter
+from collections import deque
 from copy import copy
 
 
@@ -72,7 +71,7 @@ def print_solved_domain(csp):
 
 # Function to create all arcs from the constraints
 def CreateArcs(constraints):
-    arcs_queue = []
+    arcs_queue = deque([])
     for constraint in constraints:
         for x in constraint:
             for y in constraint:
@@ -100,7 +99,7 @@ def AC3(csp):
     arcs_queue = CreateArcs(csp.constraints)  # Create all arcs
     fringe = arcs_queue.copy()  # Set up the queue of arcs to be processed
     while fringe:
-        (Xi, Xj) = fringe.pop(0)  # Pop an arc
+        (Xi, Xj) = fringe.popleft()  # Pop an arc
         if Revise(csp, Xi, Xj):  # If the domain of Xi is revised
             if len(csp.domain[Xi]) == 0:  # If Xi has no valid values left, return failure
                 return False

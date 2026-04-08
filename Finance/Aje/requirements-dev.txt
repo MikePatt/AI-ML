@@ -1,3 +1,0 @@
--r requirements-finance.txt
--r requirements-sentiment.txt
-pytest>=8.0.0
